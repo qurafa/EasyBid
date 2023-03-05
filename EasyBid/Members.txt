@@ -1,4 +1,4 @@
-Aidan
-Faruq
-Hashir
-Syed
+Aidan(BiddingService)
+Faruq(AuctionService)
+Hashir(UserService)
+Syed(ShippingService)
