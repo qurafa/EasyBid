@@ -1,4 +1,4 @@
-package com.EasyBid.AuctionService.model;
+package com.EasyBid.AuctionService.entity;
 
 import jakarta.persistence.*;
 
@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class AuctionItem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     //item parameters
@@ -30,6 +30,8 @@ public class AuctionItem {
         this.price = price;
     }
 
+    public long getID(){return this.id;}
+
     public String getName(){
         return this.name;
     }
@@ -40,5 +42,17 @@ public class AuctionItem {
 
     public double getPrice(){
         return this.price;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
+    }
+
+    public void setPrice(double price){
+        this.price = price;
     }
 }
