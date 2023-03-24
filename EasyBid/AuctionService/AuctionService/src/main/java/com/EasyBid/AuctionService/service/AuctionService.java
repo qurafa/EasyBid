@@ -3,6 +3,7 @@ package com.EasyBid.AuctionService.service;
 import com.EasyBid.AuctionService.entity.AuctionItem;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AuctionService {
 

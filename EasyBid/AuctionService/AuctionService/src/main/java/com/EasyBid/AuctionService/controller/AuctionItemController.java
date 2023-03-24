@@ -3,11 +3,15 @@ package com.EasyBid.AuctionService.controller;
 import com.EasyBid.AuctionService.entity.AuctionItem;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 import com.EasyBid.AuctionService.service.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,14 +22,23 @@ public class AuctionItemController {
     private AuctionService auctionItemService;
 
     @GetMapping("/items")
-    public ResponseEntity<List<AuctionItem>> getAllItems(@RequestParam(required  = false) String title){
+    public ResponseEntity<List<AuctionItem>> getAllItems(){
         return ResponseEntity.ok(auctionItemService.getAllItems());
     }
 
-    @GetMapping("/items/{query}")
-    public ResponseEntity<List<AuctionItem>> getItemsByQuery(@PathVariable("query") String query){
-        return ResponseEntity.ok(auctionItemService.getItemsByQuery(query));
-    }
+//    @GetMapping("/items")
+//    public String getAllItems(Model model){
+//
+//        model.addAttribute("auctionItems", auctionItemService.getAllItems());
+//
+//        return "getAllItems";
+//    }
+//
+//    removed cuz conflicting with getAuctionItemByID
+//    @GetMapping("/items/{query}")
+//    public ResponseEntity<List<AuctionItem>> getItemsByQuery(@PathVariable("query") String query){
+//        return ResponseEntity.ok(auctionItemService.getItemsByQuery(query));
+//    }
 
     @GetMapping("/items/{id}")
     public ResponseEntity<AuctionItem> getAuctionItemByID(@PathVariable("id") long id){

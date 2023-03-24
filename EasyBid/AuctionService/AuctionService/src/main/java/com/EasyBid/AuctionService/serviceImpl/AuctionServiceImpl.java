@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AuctionServiceImpl implements AuctionService {
@@ -31,22 +28,15 @@ public class AuctionServiceImpl implements AuctionService {
     @Override
     public List<AuctionItem> getItemsByQuery(String query) {
         List<AuctionItem> items = getAllItems();
-        HashSet<AuctionItem> output = null;
         for (AuctionItem item : items) {
-            output = (output == null) ? new HashSet<>() : output;
-
-            if(item.getName().contains(query)) output.add(item);
-            if(item.getDescription().contains(query)) output.add(item);
+            if(!item.getName().contains(query)) items.remove(item);
         }
-
-        return (output.size() <= 0) ? null : new ArrayList<>(output);
+        return items;
     }
 
     @Override
     public AuctionItem getItemById(long itemId) {
-        //List<AuctionItem> output = auctionRepository.findAllById(Collections.singleton(itemId));
-        //return (output.size() <= 0) ? null : output.get(0);
-        return auctionRepository.getReferenceById(itemId);
+        return auctionRepository.findById(itemId).get();
     }
 
     @Override
@@ -57,6 +47,7 @@ public class AuctionServiceImpl implements AuctionService {
                         prev.setName(update.getName());
                         prev.setDescription(update.getDescription());
                         prev.setPrice(update.getPrice());
+                        prev.setAuctionType(update.getAuctionType());
                         return ResponseEntity.ok(true);
                     }
                 ).orElseGet(() ->{

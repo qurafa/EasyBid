@@ -20,14 +20,26 @@ public class AuctionItem {
     @Column(name = "price")
     private double price;
 
-    public AuctionItem(){
+    @Column(name = "auctionType")
+    private String auctionType;
 
+    public AuctionItem(){
+        super();
     }
 
-    public AuctionItem(String name, String description, double price){
+    public AuctionItem(String name, String description, double price, String auctionType){
+        super();
         this.name = name;
         this.description =  description;
         this.price = price;
+        this.auctionType = auctionType;
+    }
+
+    public AuctionItem(AuctionItem auctionItem){
+        this.name = auctionItem.getName();
+        this.description = auctionItem.getDescription();
+        this.price = this.getPrice();
+        this.auctionType = this.getAuctionType();
     }
 
     public long getID(){return this.id;}
@@ -44,6 +56,10 @@ public class AuctionItem {
         return this.price;
     }
 
+    public String getAuctionType(){
+        return this.auctionType;
+    }
+
     public void setName(String name){
         this.name = name;
     }
@@ -54,5 +70,9 @@ public class AuctionItem {
 
     public void setPrice(double price){
         this.price = price;
+    }
+
+    public void setAuctionType(String auctionType){
+        this.auctionType = auctionType;
     }
 }
