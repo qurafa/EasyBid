@@ -1,20 +1,102 @@
-import React, { Component } from 'react';
-import { Button, ButtonGroup, Container, Table } from 'reactstrap';
-import AppNavbar from './AppNavbar';
-import { Link } from 'react-router-dom';
+import React, { Component, useState } from 'react';
+import { Container, Table } from 'reactstrap';
 
-class ClientList extends Component {
+class AuctionItemList extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {clients: []};
-        this.remove = this.remove.bind(this);
+        this.state = {items: [], searchTitle : ""};
+        this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
+        this.searchTitle = this.searchTitle.bind(this);
+    }
+
+    onChangeSearchTitle(e) {
+        const searchTitle = e.target.value;
+    
+        this.setState({
+          searchTitle: searchTitle
+        });
+        this.searchTitle();
+    }
+
+    searchTitle() {
+        fetch('/auction/items?query=' + this.state.searchTitle)
+            .then(response => response.json())
+            .then(data => this.setState({items: data}));
     }
 
     componentDidMount() {
         fetch('/auction/items')
             .then(response => response.json())
-            .then(data => this.setState({clients: data}));
+            .then(data => this.setState({items: data}));
+    }
+
+    render() {
+        const {items, searchTitle} = this.state;
+
+        const itemList = items.map(item => {
+            return <tr key={item.id}>
+                <td style={{whiteSpace: 'nowrap'}}>{item.name}</td>
+                <td>{item.description}</td>
+                <td>{item.price}</td>
+                <td>{item.auctionType}</td>
+            </tr>
+        });
+
+        return (
+            <div>
+                <Container fluid>
+                    <h3>Auction Items</h3>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder=""
+                        value={searchTitle}
+                        onChange={this.onChangeSearchTitle}/>
+                    <Table className="mt-4">
+                        <thead>
+                        <tr>
+                            <th width="30%">Name</th>
+                            <th width="30%">Description</th>
+                            <th width="20%">Price</th>
+                            <th width="20%">Auction Type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {itemList}
+                        </tbody>
+                    </Table>
+                </Container>
+            </div>
+        );
     }
 }
-export default ClientList;
+
+// function searchBar () 
+// {
+//     const [searchInput, setSearchInput] = useState("");
+   
+//    const handleChange = (e) => {
+//      e.preventDefault();
+//      setSearchInput(e.target.value);
+//    };
+   
+// //    if (searchInput.length > 0) {
+// //        countries.filter((country) => {
+// //        return country.name.match(searchInput);
+// //    });
+// //    }
+   
+//    return <div>
+   
+//    <input
+//       type="search"
+//       placeholder="Search here"
+//       onChange={handleChange}
+//       value={searchInput} />
+//    </div>
+   
+   
+// };
+
+export default AuctionItemList;

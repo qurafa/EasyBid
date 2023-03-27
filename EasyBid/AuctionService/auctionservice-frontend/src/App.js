@@ -1,32 +1,17 @@
 import React, { Component } from 'react';
+import './App.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import AuctionItemList from './AuctionItemList';
 
 class App extends Component {
-  state = {
-    auctionItems: []
-  };
-
-  async componentDidMount() {
-    const response = await fetch('/auction/items');
-    const body = await response.json();
-    this.setState({auctionItems: body});
-  }
-
   render() {
-    const {auctionItems} = this.state;
     return (
-        <div className="App">
-          <header className="App-header">
-            <div className="App-intro">
-              <h2>AuctionItems</h2>
-              {auctionItems.map(item =>
-                  <div key={item.id}>
-                    {item.name} {item.description} {item.price} {item.auctionType}
-                  </div>
-              )}
-            </div>
-          </header>
-        </div>
-    );
+        <Router>
+          <Switch>
+            <Route path='/*' component={AuctionItemList}/>
+          </Switch>
+        </Router>
+    )
   }
 }
 export default App;

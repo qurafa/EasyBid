@@ -9,9 +9,7 @@ public interface AuctionService {
 
     AuctionItem save(AuctionItem item);
 
-    List<AuctionItem> getAllItems();
-
-    List<AuctionItem> getItemsByQuery(String query);
+    List<AuctionItem> getAllItems(String query);
 
     AuctionItem getItemById(long itemId);
 

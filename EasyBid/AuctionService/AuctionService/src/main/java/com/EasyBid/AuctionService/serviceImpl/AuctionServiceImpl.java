@@ -21,17 +21,20 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     @Override
-    public List<AuctionItem> getAllItems() {
-        return auctionRepository.findAll();
-    }
-
-    @Override
-    public List<AuctionItem> getItemsByQuery(String query) {
-        List<AuctionItem> items = getAllItems();
-        for (AuctionItem item : items) {
-            if(!item.getName().contains(query)) items.remove(item);
+    public List<AuctionItem> getAllItems(String query) {
+        List<AuctionItem> temp = auctionRepository.findAll();
+        if(query == null){
+            return temp;
         }
-        return items;
+        else{
+            List<AuctionItem> output = new ArrayList<>();
+            for(int i = 0; i < temp.size(); i++){
+                System.out.println("Name: " + temp.get(i).getName() + " Description: " + temp.get(i).getDescription());
+                if(temp.get(i).getName().contains(query) || temp.get(i).getDescription().contains(query))
+                    output.add(temp.get(i));
+            }
+            return output;
+        }
     }
 
     @Override
