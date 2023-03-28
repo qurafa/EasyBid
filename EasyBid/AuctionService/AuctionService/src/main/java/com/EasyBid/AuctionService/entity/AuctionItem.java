@@ -22,26 +22,26 @@ public class AuctionItem {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "startPrice")
+    @Column(name = "start_price")
     private double startPrice;
 
-    @Column(name = "currentPrice")
+    @Column(name = "current_price")
     private double currentPrice;
 
-    @Column(name = "auctionType")
+    @Column(name = "auction_type")
     private String auctionType;
 
-    @Column(name = "createDate")
+    @Column(name = "create_date")
     //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @CreationTimestamp
     private Date createDate;
 
-    @Column(name = "createTime")
+    @Column(name = "create_time")
     //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @CreationTimestamp
     private Time createTime;
 
-    @Column(name = "auctionLength")
+    @Column(name = "auction_length")
     private Time auctionLength;
 
     public AuctionItem(){

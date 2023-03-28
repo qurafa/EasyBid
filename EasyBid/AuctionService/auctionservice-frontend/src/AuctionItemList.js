@@ -47,8 +47,8 @@ class AuctionItemList extends Component {
             return <tr key={item.id}>
                 <td style={{whiteSpace: 'nowrap'}}>{item.name}</td>
                 <td>{item.description}</td>
-                <td>{item.price}</td>
-                <td>{item.price}</td>
+                <td>{item.start_price}</td>
+                <td>{item.current_price}</td>
                 <td>{item.auctionType}</td>
             </tr>
         });
