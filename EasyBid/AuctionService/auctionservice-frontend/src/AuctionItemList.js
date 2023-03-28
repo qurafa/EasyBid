@@ -1,5 +1,6 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import { Container, Table } from 'reactstrap';
+//import { withRouter } from 'react-router-dom'
 
 class AuctionItemList extends Component {
 
@@ -7,7 +8,22 @@ class AuctionItemList extends Component {
         super(props);
         this.state = {items: [], searchTitle : ""};
         this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
-        this.searchTitle = this.searchTitle.bind(this);
+    }
+
+    componentDidMount() {
+        //const { id } = ;
+        console.log(this.props.match.params.id);
+        // if(id == null)
+        //     console.log(null);
+        // else
+        //     console.log(id.params.id);
+
+        fetch('/auction/'+this.props.match.params.id);
+
+        fetch('/auction/items')
+            .then(response => response.json())
+            .then(data => this.setState({items: data}));
+        
     }
 
     onChangeSearchTitle(e) {
@@ -16,19 +32,12 @@ class AuctionItemList extends Component {
         this.setState({
           searchTitle: searchTitle
         });
-        this.searchTitle();
-    }
 
-    searchTitle() {
-        fetch('/auction/items?query=' + this.state.searchTitle)
+        fetch('/auction//items?query=' + this.state.searchTitle)
             .then(response => response.json())
             .then(data => this.setState({items: data}));
-    }
-
-    componentDidMount() {
-        fetch('/auction/items')
-            .then(response => response.json())
-            .then(data => this.setState({items: data}));
+            
+        this.render();//trigerring re-rendering of the system
     }
 
     render() {
@@ -38,6 +47,7 @@ class AuctionItemList extends Component {
             return <tr key={item.id}>
                 <td style={{whiteSpace: 'nowrap'}}>{item.name}</td>
                 <td>{item.description}</td>
+                <td>{item.price}</td>
                 <td>{item.price}</td>
                 <td>{item.auctionType}</td>
             </tr>
@@ -56,9 +66,10 @@ class AuctionItemList extends Component {
                     <Table className="mt-4">
                         <thead>
                         <tr>
-                            <th width="30%">Name</th>
-                            <th width="30%">Description</th>
-                            <th width="20%">Price</th>
+                            <th width="10%">Name</th>
+                            <th width="20%">Description</th>
+                            <th width="5%">Start Price</th>
+                            <th width="5%">Current Price</th>
                             <th width="20%">Auction Type</th>
                         </tr>
                         </thead>

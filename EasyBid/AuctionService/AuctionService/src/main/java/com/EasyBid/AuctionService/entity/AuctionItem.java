@@ -1,6 +1,11 @@
 package com.EasyBid.AuctionService.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.sql.Date;
+import java.sql.Time;
 
 @Entity
 @Table(name = "items")
@@ -17,29 +22,50 @@ public class AuctionItem {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "price")
-    private double price;
+    @Column(name = "startPrice")
+    private double startPrice;
+
+    @Column(name = "currentPrice")
+    private double currentPrice;
 
     @Column(name = "auctionType")
     private String auctionType;
+
+    @Column(name = "createDate")
+    //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @CreationTimestamp
+    private Date createDate;
+
+    @Column(name = "createTime")
+    //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @CreationTimestamp
+    private Time createTime;
+
+    @Column(name = "auctionLength")
+    private Time auctionLength;
 
     public AuctionItem(){
         super();
     }
 
-    public AuctionItem(String name, String description, double price, String auctionType){
+    public AuctionItem(String name, String description, double price, String auctionType, Date date, Time time){
         super();
         this.name = name;
         this.description =  description;
-        this.price = price;
+        this.startPrice = price;
         this.auctionType = auctionType;
+        this.createDate = date;
+        this.createTime = time;
     }
 
     public AuctionItem(AuctionItem auctionItem){
+        super();
         this.name = auctionItem.getName();
         this.description = auctionItem.getDescription();
-        this.price = this.getPrice();
-        this.auctionType = this.getAuctionType();
+        this.startPrice = auctionItem.getPrice();
+        this.auctionType = auctionItem.getAuctionType();
+        this.createDate = auctionItem.getDate();
+        this.createTime = auctionItem.getTime();
     }
 
     public long getID(){return this.id;}
@@ -53,11 +79,19 @@ public class AuctionItem {
     }
 
     public double getPrice(){
-        return this.price;
+        return this.startPrice;
     }
 
     public String getAuctionType(){
         return this.auctionType;
+    }
+
+    public Date getDate(){
+        return this.createDate;
+    }
+
+    public Time getTime(){
+        return this.createTime;
     }
 
     public void setName(String name){
@@ -69,10 +103,18 @@ public class AuctionItem {
     }
 
     public void setPrice(double price){
-        this.price = price;
+        this.startPrice = price;
     }
 
     public void setAuctionType(String auctionType){
         this.auctionType = auctionType;
+    }
+
+    public void setDate(Date date){
+        this.createDate = date;
+    }
+
+    public void setTime(Time time){
+        this.createTime = time;
     }
 }

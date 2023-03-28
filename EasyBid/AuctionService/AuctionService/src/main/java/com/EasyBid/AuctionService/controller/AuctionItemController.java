@@ -7,12 +7,14 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 import com.EasyBid.AuctionService.service.AuctionService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/auction")
@@ -20,6 +22,18 @@ public class AuctionItemController {
 
     @Autowired
     private AuctionService auctionItemService;
+
+    private static long sessionUserId;
+
+    //redirects us to the React page and create the user session
+    @GetMapping("/{userId}")
+    public void saveUserSess(@PathVariable long userId){
+        sessionUserId = userId;
+        System.out.println("Set UserID: " + sessionUserId);
+        //To-do: add an error method to display something if id is not specified
+        //response.setHeader("Location", "localhost:3000/");
+        //response.setStatus(302);
+    }
 
     @GetMapping("/items")
     public ResponseEntity<List<AuctionItem>> getAllItems(@RequestParam(required = false)String query){
