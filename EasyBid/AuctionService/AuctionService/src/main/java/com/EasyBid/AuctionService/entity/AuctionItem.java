@@ -16,56 +16,59 @@ public class AuctionItem {
     private long id;
 
     //item parameters
-    @Column(name = "name")
+//    @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
+//    @Column(name = "description")
     private String description;
 
-    @Column(name = "start_price")
-    private double startPrice;
+//    @Column(name = "start_price")
+    private double start_price;
 
-    @Column(name = "current_price")
-    private double currentPrice;
+//    @Column(name = "current_price")
+    private double current_price;
 
-    @Column(name = "auction_type")
-    private String auctionType;
+//    @Column(name = "auction_type")
+    private String auction_type;
 
-    @Column(name = "create_date")
+//    @Column(name = "create_date")
     //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @CreationTimestamp
-    private Date createDate;
+    private Date create_date;
 
-    @Column(name = "create_time")
+//    @Column(name = "create_time")
     //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @CreationTimestamp
-    private Time createTime;
+    private Time create_time;
 
-    @Column(name = "auction_length")
-    private Time auctionLength;
+//    @Column(name = "auction_length")
+    private int auction_length;
 
     public AuctionItem(){
         super();
     }
 
-    public AuctionItem(String name, String description, double price, String auctionType, Date date, Time time){
+    public AuctionItem(String name, String description, double start_price, double current_price, String auction_type, Date create_date, Time create_time, int auction_length){
         super();
         this.name = name;
         this.description =  description;
-        this.startPrice = price;
-        this.auctionType = auctionType;
-        this.createDate = date;
-        this.createTime = time;
+        this.start_price = start_price;
+        this.current_price = start_price;
+        this.auction_type = auction_type;
+        this.create_date = create_date;
+        this.create_time = create_time;
+        this.auction_length = auction_length;
     }
 
     public AuctionItem(AuctionItem auctionItem){
         super();
         this.name = auctionItem.getName();
         this.description = auctionItem.getDescription();
-        this.startPrice = auctionItem.getPrice();
-        this.auctionType = auctionItem.getAuctionType();
-        this.createDate = auctionItem.getDate();
-        this.createTime = auctionItem.getTime();
+        this.start_price = auctionItem.getStartPrice();
+        this.auction_type = auctionItem.getAuctionType();
+        this.create_date = auctionItem.getDate();
+        this.create_time = auctionItem.getTime();
+        this.auction_length = auctionItem.getLength();
     }
 
     public long getID(){return this.id;}
@@ -78,20 +81,28 @@ public class AuctionItem {
         return this.description;
     }
 
-    public double getPrice(){
-        return this.startPrice;
+    public double getStartPrice(){
+        return this.start_price;
+    }
+
+    public double getCurrentPrice(){
+        return this.current_price;
     }
 
     public String getAuctionType(){
-        return this.auctionType;
+        return this.auction_type;
     }
 
     public Date getDate(){
-        return this.createDate;
+        return this.create_date;
     }
 
     public Time getTime(){
-        return this.createTime;
+        return this.create_time;
+    }
+
+    public int getLength(){
+        return this.auction_length;
     }
 
     public void setName(String name){
@@ -102,19 +113,41 @@ public class AuctionItem {
         this.description = description;
     }
 
-    public void setPrice(double price){
-        this.startPrice = price;
+    public void setStartPrice(double price){
+        this.start_price = price;
+    }
+
+    public void setCurrentPrice(double price){
+        this.current_price = price;
     }
 
     public void setAuctionType(String auctionType){
-        this.auctionType = auctionType;
+        this.auction_type = auctionType;
     }
 
     public void setDate(Date date){
-        this.createDate = date;
+        this.create_date = date;
     }
 
     public void setTime(Time time){
-        this.createTime = time;
+        this.create_time = time;
+    }
+
+    public void setLength(int length){
+        this.auction_length = length;
+    }
+
+    public String toString(){
+        String output = getID() + "\n" +
+                getName() + "\n" +
+                getDescription() + "\n" +
+                getStartPrice() + "\n" +
+                getCurrentPrice() + "\n" +
+                getAuctionType() + "\n" +
+                getDate().toString() + "\n" +
+                getTime().toString() + "\n" +
+                getLength();
+
+        return output;
     }
 }

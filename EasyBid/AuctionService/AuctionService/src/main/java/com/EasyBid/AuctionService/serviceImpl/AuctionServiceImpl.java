@@ -17,7 +17,10 @@ public class AuctionServiceImpl implements AuctionService {
 
     @Override
     public AuctionItem save(AuctionItem item) {
-        return auctionRepository.save(item);
+        //System.out.println(item.toString());
+        AuctionItem i = auctionRepository.save(item);
+        System.out.println(i.toString());
+        return i;
     }
 
     @Override
@@ -49,7 +52,8 @@ public class AuctionServiceImpl implements AuctionService {
                     prev -> {
                         prev.setName(update.getName());
                         prev.setDescription(update.getDescription());
-                        prev.setPrice(update.getPrice());
+                        prev.setStartPrice(update.getStartPrice());
+                        prev.setCurrentPrice(update.getCurrentPrice());
                         prev.setAuctionType(update.getAuctionType());
                         return ResponseEntity.ok(true);
                     }
