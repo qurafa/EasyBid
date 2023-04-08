@@ -12,7 +12,7 @@ class AuctionItemList extends Component {
 
     componentDidMount() {
         //const { id } = ;
-        console.log(this.props.match.params.id);
+        console.log(this.props.match.params.uName);
         // if(id == null)
         //     console.log(null);
         // else
@@ -40,6 +40,11 @@ class AuctionItemList extends Component {
         this.render();//trigerring re-rendering of the system
     }
 
+    more(id){
+        console.log(id);
+        fetch('/auction/items/'+id);
+    }
+
     render() {
         const {items, searchTitle} = this.state;
 
@@ -47,16 +52,19 @@ class AuctionItemList extends Component {
             return <tr key={item.id}>
                 <td style={{whiteSpace: 'nowrap'}}>{item.name}</td>
                 <td>{item.description}</td>
-                <td>{item.startPrice}</td>
-                <td>{item.currentPrice}</td>
-                <td>{item.auctionType}</td>
+                <td>{item.start_price}</td>
+                <td>{item.current_price}</td>
+                <td>{item.auction_type}</td>
+                <td>
+                <button onClick={ () => this.more(item.id)} className="btn btn-more">More</button>
+                </td>
             </tr>
         });
 
         return (
             <div>
                 <Container fluid>
-                    <h3>Auction Items</h3>
+                    <h3>Auction Items for {this.props.match.params.uName}</h3>
                     <input
                         type="text"
                         className="form-control"
@@ -67,10 +75,11 @@ class AuctionItemList extends Component {
                         <thead>
                         <tr>
                             <th width="10%">Name</th>
-                            <th width="20%">Description</th>
-                            <th width="5%">Start Price</th>
-                            <th width="5%">Current Price</th>
+                            <th width="30%">Description</th>
+                            <th width="15%">Start Price</th>
+                            <th width="15%">Current Price</th>
                             <th width="20%">Auction Type</th>
+                            <th width="10">More</th>
                         </tr>
                         </thead>
                         <tbody>

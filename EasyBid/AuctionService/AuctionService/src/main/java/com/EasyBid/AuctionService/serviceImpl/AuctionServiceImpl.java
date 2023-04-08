@@ -50,11 +50,7 @@ public class AuctionServiceImpl implements AuctionService {
         auctionRepository.findById(id)
                 .map(
                     prev -> {
-                        prev.setName(update.getName());
-                        prev.setDescription(update.getDescription());
-                        prev.setStartPrice(update.getStartPrice());
-                        prev.setCurrentPrice(update.getCurrentPrice());
-                        prev.setAuctionType(update.getAuctionType());
+                        prev.updateItem(update);
                         return ResponseEntity.ok(true);
                     }
                 ).orElseGet(() ->{
