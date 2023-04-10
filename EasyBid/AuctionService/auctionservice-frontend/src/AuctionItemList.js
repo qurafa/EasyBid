@@ -49,7 +49,7 @@ class AuctionItemList extends Component {
                 id: item.id
             })
         };
-        window.open('http://localhost:8090/auction/createBid/'+this.props.match.params.uName+"/"+item.id, "_blank");
+        window.open('http://localhost:8090/auction/createBid/'+this.props.match.params.uID+"/"+item.id, "_blank");
         //window.location.replace('http://localhost:8090/auction/createBid/'+this.props.match.params.uName+"/"+item.id)
         //fetch('http://localhost:8090/auction/createBid', requestOptions);
     }

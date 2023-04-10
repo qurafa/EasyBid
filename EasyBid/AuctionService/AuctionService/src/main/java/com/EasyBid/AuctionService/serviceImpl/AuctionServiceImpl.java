@@ -51,6 +51,7 @@ public class AuctionServiceImpl implements AuctionService {
                 .map(
                     prev -> {
                         prev.updateItem(update);
+                        auctionRepository.save(prev);
                         return ResponseEntity.ok(true);
                     }
                 ).orElseGet(() ->{

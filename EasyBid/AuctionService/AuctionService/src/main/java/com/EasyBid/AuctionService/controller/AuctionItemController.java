@@ -9,6 +9,8 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 import com.EasyBid.AuctionService.service.AuctionService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,24 +35,35 @@ public class AuctionItemController {
     private static String sessionUserName;
 
     //redirects us to the React page and create the user session
-    @GetMapping("/{uName}")
-    public ResponseEntity<?> saveUserSess(HttpServletRequest request, HttpServletResponse response, @PathVariable("uName") String uName) throws ServletException, IOException {
-        String u = (String) request.getSession().getAttribute("username");
+    @GetMapping("/{id}")
+    public ResponseEntity<?> saveUserSess(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") String id) throws ServletException, IOException {
+        String url = "http://localhost:8080/firstLastTransfer/"+id;
+        String firstLast = restTemplate.getForObject(url, String.class);
+        System.out.println("firstLast: " + firstLast);
+        
+        String u = (String) request.getSession().getAttribute("uID");
         if(u == null) {
-            request.getSession().setAttribute("username", uName);
+            request.getSession().setAttribute("uID", id);
         }
-        String target = "http://localhost:3000/" + uName;
+        String target = "http://localhost:3000/" + firstLast + "/" + id;
 //        request.getRequestDispatcher(target).forward(request, response);
         //To-do: add an error method to display something if uName is not specified
 //        response.setHeader("Location", target);
 //        response.setStatus(302);
+
+//        ObjectMapper mapper = new ObjectMapper();
+//        JsonNode root = mapper.readTree(userInfo.getBody());
+//        JsonNode id = root.path("id");
+//        System.out.println(id.toString());
+
         response.sendRedirect(target);
+
         return new ResponseEntity<>("Session Saved Successfully", HttpStatus.CREATED);
     }
 
-    @GetMapping("/createBid/{username}/{itemId}")
+    @GetMapping("/createBid/{uID}/{itemId}")
 //    @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<?> createBid(HttpServletRequest request, HttpServletResponse response, @PathVariable String username, @PathVariable long itemId) throws ServletException, IOException {
+    public ResponseEntity<?> createBid(HttpServletRequest request, HttpServletResponse response, @PathVariable String uID, @PathVariable long itemId) throws ServletException, IOException {
 
 //        request.getSession().setAttribute("username", username);
 //        request.getSession().setAttribute("itemId", itemId);
@@ -59,8 +72,8 @@ public class AuctionItemController {
 //        String i = (String) request.getSession().getAttribute("itemId");
 //
 //        if(u == null) u = "...";
-        String target = "http://localhost:8098/room/"+username+"/"+itemId;
-        System.out.println(target + " Username: " + username + " ItemId: " + itemId);
+        String target = "http://localhost:8098/room/"+uID+"/"+itemId;
+        System.out.println(target + " UID: " + uID + " ItemId: " + itemId);
         response.sendRedirect(target);
 //        request.getRequestDispatcher(target).forward(request, response);
         System.out.println("Create Bid Done");

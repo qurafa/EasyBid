@@ -8,7 +8,7 @@ class App extends Component {
     return (
         <Router>
           <Switch>
-            <Route path='/:uName' component={AuctionItemList}/>
+            <Route path='/:uName/:uID' component={AuctionItemList}/>
           </Switch>
         </Router>
     )
