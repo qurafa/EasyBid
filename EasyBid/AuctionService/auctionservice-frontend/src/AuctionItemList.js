@@ -40,9 +40,18 @@ class AuctionItemList extends Component {
         this.render();//trigerring re-rendering of the system
     }
 
-    more(id){
-        console.log(id);
-        fetch('/auction/items/'+id);
+    more(item){
+        console.log(item.id);
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                id: item.id
+            })
+        };
+        window.open('http://localhost:8090/auction/createBid/'+this.props.match.params.uName+"/"+item.id, "_blank");
+        //window.location.replace('http://localhost:8090/auction/createBid/'+this.props.match.params.uName+"/"+item.id)
+        //fetch('http://localhost:8090/auction/createBid', requestOptions);
     }
 
     render() {
@@ -56,7 +65,7 @@ class AuctionItemList extends Component {
                 <td>{item.current_price}</td>
                 <td>{item.auction_type}</td>
                 <td>
-                <button onClick={ () => this.more(item.id)} className="btn btn-more">More</button>
+                <button onClick={ () => this.more(item)} className="btn btn-more">More</button>
                 </td>
             </tr>
         });

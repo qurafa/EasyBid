@@ -3,6 +3,7 @@ package com.EasyBid.AuctionService.controller;
 import com.EasyBid.AuctionService.entity.AuctionItem;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -12,11 +13,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
@@ -26,11 +27,14 @@ public class AuctionItemController {
     @Autowired
     private AuctionService auctionItemService;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     private static String sessionUserName;
 
     //redirects us to the React page and create the user session
     @GetMapping("/{uName}")
-    public void saveUserSess(HttpServletRequest request, HttpServletResponse response, @PathVariable("uName") String uName) throws ServletException, IOException {
+    public ResponseEntity<?> saveUserSess(HttpServletRequest request, HttpServletResponse response, @PathVariable("uName") String uName) throws ServletException, IOException {
         String u = (String) request.getSession().getAttribute("username");
         if(u == null) {
             request.getSession().setAttribute("username", uName);
@@ -41,6 +45,30 @@ public class AuctionItemController {
 //        response.setHeader("Location", target);
 //        response.setStatus(302);
         response.sendRedirect(target);
+        return new ResponseEntity<>("Session Saved Successfully", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/createBid/{username}/{itemId}")
+//    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<?> createBid(HttpServletRequest request, HttpServletResponse response, @PathVariable String username, @PathVariable long itemId) throws ServletException, IOException {
+
+//        request.getSession().setAttribute("username", username);
+//        request.getSession().setAttribute("itemId", itemId);
+
+//        String u = (String) request.getSession().getAttribute("username");
+//        String i = (String) request.getSession().getAttribute("itemId");
+//
+//        if(u == null) u = "...";
+        String target = "http://localhost:8098/room/"+username+"/"+itemId;
+        System.out.println(target + " Username: " + username + " ItemId: " + itemId);
+        response.sendRedirect(target);
+//        request.getRequestDispatcher(target).forward(request, response);
+        System.out.println("Create Bid Done");
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//        HttpEntity<AuctionItem> entity = new HttpEntity<AuctionItem>(item, headers);
+        //ResponseEntity<String> r = restTemplate.exchange("http://localhost:8098/api/bids", HttpMethod.POST, entity, String.class);
+        return new ResponseEntity<>("Bid Created Successfully", HttpStatus.CREATED);
     }
 
     @GetMapping("/items")
@@ -51,11 +79,11 @@ public class AuctionItemController {
     //forwards to the specific item page
     @GetMapping("/items/{id}")
     public ResponseEntity<AuctionItem> getAuctionItemByID(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id) throws ServletException, IOException {
-        String u = (String) request.getSession().getAttribute("username");
-        if(u == null) u = "...";
-        System.out.println("Username: " + u);
-        String target = "";//insert link to Aidan's part...
-        request.getRequestDispatcher(target).forward(request, response);
+//        String u = (String) request.getSession().getAttribute("username");
+//        if(u == null) u = "...";
+//        System.out.println("Username: " + u);
+//        String target = "";//insert link to Aidan's part...
+//        request.getRequestDispatcher(target).forward(request, response);
         return ResponseEntity.ok(auctionItemService.getItemById(id));
     }
 
@@ -67,13 +95,13 @@ public class AuctionItemController {
 
     @PutMapping("/items/{id}")
     public ResponseEntity<?> updateItem(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id, @RequestBody AuctionItem item){
-    	auctionItemService.updateItem(id, item);
+        auctionItemService.updateItem(id, item);
         return new ResponseEntity<>("Item Updated Successfully", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/items/{id}")
     public ResponseEntity<?> deleteItem(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") long id){
-    	auctionItemService.deleteItem(id);
+        auctionItemService.deleteItem(id);
         return new ResponseEntity<>("Item Deleted Successfully", HttpStatus.CREATED);
     }
 
